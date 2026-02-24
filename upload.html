@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Upload Paper — PYQ Portal</title>
+    <meta name="description" content="Upload a previous year question paper and answer key to help fellow students." />
+    <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <a href="index.html" class="nav-logo">
+            <div class="logo-icon">📚</div>
+            PYQ Portal
+        </a>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="browse.html">Browse</a>
+            <a href="upload.html" class="nav-cta btn btn-sm active">+ Upload Paper</a>
+        </div>
+    </nav>
+
+    <!-- PAGE HERO -->
+    <div class="page-hero">
+        <div class="container">
+            <h1>⬆️ Upload a Question Paper</h1>
+            <p>Share a PYQ paper with the community. Your upload helps thousands of students prepare better.</p>
+        </div>
+    </div>
+
+    <!-- UPLOAD FORM -->
+    <section class="section">
+        <div class="container">
+            <div style="max-width:760px; margin:0 auto;">
+                <form id="upload-form" novalidate>
+
+                    <!-- ── META INFO ── -->
+                    <div class="card" style="margin-bottom:1.5rem;">
+                        <h3 style="margin-bottom:1.25rem; font-size:1.05rem;">📋 Paper Details</h3>
+                        <div class="grid-2" style="gap:1rem; margin-bottom:1rem;">
+                            <div class="form-group">
+                                <label class="form-label" for="subject">Subject *</label>
+                                <input class="form-input" id="subject" type="text"
+                                    placeholder="e.g. Mathematics, Physics" required />
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="exam-name">Exam / Course Name *</label>
+                                <input class="form-input" id="exam-name" type="text"
+                                    placeholder="e.g. JEE Advanced, CBSE Class 12" required />
+                            </div>
+                        </div>
+                        <div class="grid-2" style="gap:1rem; margin-bottom:1rem;">
+                            <div class="form-group">
+                                <label class="form-label" for="year">Year *</label>
+                                <select class="form-select" id="year" required>
+                                    <option value="">Select year</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="board">Board / University</label>
+                                <input class="form-input" id="board" type="text"
+                                    placeholder="e.g. NTA, CBSE, Anna University" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="description">Description / Notes</label>
+                            <textarea class="form-textarea" id="description"
+                                placeholder="e.g. Paper 1 of 2, Set A, 3 hours, 100 marks..."></textarea>
+                        </div>
+                    </div>
+
+                    <!-- ── QUESTION PAPER ── -->
+                    <div class="card" style="margin-bottom:1.5rem;">
+                        <h3 style="margin-bottom:0.4rem; font-size:1.05rem;">📄 Question Paper *</h3>
+                        <p style="color:var(--text-muted); font-size:0.82rem; margin-bottom:1rem;">Accepted: PDF, JPG,
+                            PNG, WEBP (max 20 MB)</p>
+                        <div class="dropzone" id="qp-drop" onclick="document.getElementById('qp-file').click()">
+                            <span class="dz-icon">📄</span>
+                            <div class="dz-label">Drop your question paper here</div>
+                            <div class="dz-sub">or click to browse</div>
+                            <input type="file" id="qp-file" accept=".pdf,.jpg,.jpeg,.png,.webp" style="display:none" />
+                            <div class="dz-preview" id="qp-preview" style="display:none;">
+                                <span>✅</span>
+                                <span class="dz-preview-name" id="qp-name"></span>
+                                <button type="button" class="btn btn-ghost btn-sm" onclick="clearFile('qp')">✕</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ── ANSWER KEY ── -->
+                    <div class="card" style="margin-bottom:1.5rem;">
+                        <h3 style="margin-bottom:0.4rem; font-size:1.05rem;">🔑 Answer Key <span
+                                style="color:var(--text-muted); font-weight:400;">(optional)</span></h3>
+                        <p style="color:var(--text-muted); font-size:0.82rem; margin-bottom:1rem;">Accepted: PDF, JPG,
+                            PNG, WEBP (max 20 MB)</p>
+                        <div class="dropzone" id="ak-drop" onclick="document.getElementById('ak-file').click()">
+                            <span class="dz-icon">🔑</span>
+                            <div class="dz-label">Drop the answer key here</div>
+                            <div class="dz-sub">or click to browse</div>
+                            <input type="file" id="ak-file" accept=".pdf,.jpg,.jpeg,.png,.webp" style="display:none" />
+                            <div class="dz-preview" id="ak-preview" style="display:none;">
+                                <span>✅</span>
+                                <span class="dz-preview-name" id="ak-name"></span>
+                                <button type="button" class="btn btn-ghost btn-sm" onclick="clearFile('ak')">✕</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ── SUBMIT ── -->
+                    <div style="display:flex; justify-content:flex-end; gap:1rem;">
+                        <a href="browse.html" class="btn btn-outline">Cancel</a>
+                        <button type="submit" class="btn btn-primary btn-lg" id="submit-btn">
+                            <span id="submit-text">🚀 Publish Paper</span>
+                            <span id="submit-loader" style="display:none;">Processing…</span>
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <p>© 2026 PYQ Portal · <a href="index.html">Home</a> · <a href="browse.html">Browse Papers</a></p>
+        </div>
+    </footer>
+
+    <div id="toast-container"></div>
+    <script src="app.js"></script>
+    <script>
+        // ── File store ──
+        let qpFile = null, akFile = null;
+
+        function setupDropzone(dropId, inputId, previewId, nameId, type) {
+            const drop = document.getElementById(dropId);
+            const input = document.getElementById(inputId);
+
+            input.addEventListener('change', () => handleFile(input.files[0], type));
+
+            drop.addEventListener('dragover', e => { e.preventDefault(); drop.classList.add('drag-over'); });
+            drop.addEventListener('dragleave', () => drop.classList.remove('drag-over'));
+            drop.addEventListener('drop', e => {
+                e.preventDefault(); drop.classList.remove('drag-over');
+                if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0], type);
+            });
+        }
+
+        function handleFile(file, type) {
+            if (!file) return;
+            const maxMB = 20;
+            if (file.size > maxMB * 1024 * 1024) { showToast(`File too large (max ${maxMB} MB)`, 'error'); return; }
+            const allowed = ['application/pdf', 'image/jpeg', 'image/png', 'image/webp'];
+            if (!allowed.includes(file.type)) { showToast('Unsupported file type', 'error'); return; }
+
+            if (type === 'qp') qpFile = file; else akFile = file;
+
+            const drop = document.getElementById(type + '-drop');
+            const preview = document.getElementById(type + '-preview');
+            const nameEl = document.getElementById(type + '-name');
+            drop.classList.add('has-file');
+            preview.style.display = 'flex';
+            nameEl.textContent = `${file.name} (${(file.size / 1024).toFixed(0)} KB)`;
+        }
+
+        function clearFile(type) {
+            if (type === 'qp') { qpFile = null; document.getElementById('qp-file').value = ''; }
+            else { akFile = null; document.getElementById('ak-file').value = ''; }
+            document.getElementById(type + '-drop').classList.remove('has-file');
+            document.getElementById(type + '-preview').style.display = 'none';
+        }
+
+        // Populate year dropdown
+        document.addEventListener('DOMContentLoaded', () => {
+            const yearSel = document.getElementById('year');
+            for (let y = 2025; y >= 2000; y--) {
+                yearSel.insertAdjacentHTML('beforeend', `<option value="${y}">${y}</option>`);
+            }
+        });
+
+        setupDropzone('qp-drop', 'qp-file', 'qp-preview', 'qp-name', 'qp');
+        setupDropzone('ak-drop', 'ak-file', 'ak-preview', 'ak-name', 'ak');
+
+        // ── Submit ──
+        document.getElementById('upload-form').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const subject = document.getElementById('subject').value.trim();
+            const examName = document.getElementById('exam-name').value.trim();
+            const year = document.getElementById('year').value;
+
+            if (!subject) { showToast('Please enter a subject', 'error'); return; }
+            if (!examName) { showToast('Please enter the exam name', 'error'); return; }
+            if (!year) { showToast('Please select a year', 'error'); return; }
+            if (!qpFile) { showToast('Please upload the question paper', 'error'); return; }
+
+            document.getElementById('submit-text').style.display = 'none';
+            document.getElementById('submit-loader').style.display = 'inline';
+            document.getElementById('submit-btn').disabled = true;
+
+            try {
+                const qpData = await fileToBase64(qpFile);
+                const akData = akFile ? await fileToBase64(akFile) : null;
+
+                const paper = {
+                    id: Date.now().toString(),
+                    subject,
+                    examName,
+                    year,
+                    board: document.getElementById('board').value.trim(),
+                    description: document.getElementById('description').value.trim(),
+                    qpData,
+                    qpType: qpFile.type,
+                    qpName: qpFile.name,
+                    akData,
+                    akType: akFile ? akFile.type : null,
+                    akName: akFile ? akFile.name : null,
+                    uploadedAt: new Date().toISOString(),
+                };
+
+                savePaper(paper);
+                showToast('Paper published successfully! 🎉', 'success');
+                setTimeout(() => { window.location.href = 'browse.html'; }, 1500);
+            } catch (err) {
+                showToast('Upload failed. File may be too large.', 'error');
+                document.getElementById('submit-text').style.display = 'inline';
+                document.getElementById('submit-loader').style.display = 'none';
+                document.getElementById('submit-btn').disabled = false;
+            }
+        });
+    </script>
+</body>
+
+</html>

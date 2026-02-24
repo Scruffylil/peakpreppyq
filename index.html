@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PYQ Portal — Previous Year Question Papers</title>
+  <meta name="description" content="Browse and upload previous year question papers with answer keys. Ace your exams with PYQ Portal." />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <a href="index.html" class="nav-logo">
+    <div class="logo-icon">📚</div>
+    PYQ Portal
+  </a>
+  <div class="nav-links">
+    <a href="index.html" class="active">Home</a>
+    <a href="browse.html">Browse</a>
+    <a href="upload.html" class="nav-cta btn btn-sm">+ Upload Paper</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="container">
+    <div class="hero-badge">🎓 Student-Powered Question Bank</div>
+    <h1 class="hero-title">
+      Master Your Exams with<br>
+      <span class="gradient">Previous Year Papers</span>
+    </h1>
+    <p class="hero-sub">
+      Upload, access, and study PYQ papers with complete answer keys — all in one place.
+      Built by students, for students.
+    </p>
+    <div class="hero-actions">
+      <a href="browse.html" class="btn btn-primary btn-lg">📖 Browse Papers</a>
+      <a href="upload.html" class="btn btn-outline btn-lg">⬆️ Upload a Paper</a>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="section" style="padding-top:0;">
+  <div class="container">
+    <div class="grid-4" id="stats-grid">
+      <div class="card stat-card card-glow">
+        <div class="stat-num" id="stat-papers">0</div>
+        <div class="stat-label">Papers Uploaded</div>
+      </div>
+      <div class="card stat-card card-glow">
+        <div class="stat-num" id="stat-subjects">0</div>
+        <div class="stat-label">Subjects Covered</div>
+      </div>
+      <div class="card stat-card card-glow">
+        <div class="stat-num" id="stat-keys">0</div>
+        <div class="stat-label">Answer Keys Available</div>
+      </div>
+      <div class="card stat-card card-glow">
+        <div class="stat-num">100%</div>
+        <div class="stat-label">Free Forever</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RECENT PAPERS -->
+<section class="section">
+  <div class="container">
+    <h2 class="section-title">🕐 Recently Uploaded</h2>
+    <p class="section-sub">Latest contributions from the community</p>
+    <div class="grid-auto" id="recent-papers">
+      <!-- Populated by JS -->
+    </div>
+    <div id="recent-empty" class="empty-state" style="display:none;">
+      <div class="empty-icon">📋</div>
+      <h3>No papers yet</h3>
+      <p>Be the first to upload a PYQ paper!</p>
+      <br>
+      <a href="upload.html" class="btn btn-primary">Upload Now</a>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="section" style="background: var(--bg-secondary);">
+  <div class="container">
+    <h2 class="section-title" style="text-align:center;">Why PYQ Portal?</h2>
+    <p class="section-sub" style="text-align:center;">Everything students need to prepare smarter</p>
+    <div class="grid-3">
+      <div class="card card-glow" style="text-align:center; padding:2rem;">
+        <div style="font-size:2.5rem; margin-bottom:1rem;">📄</div>
+        <h3 style="margin-bottom:0.5rem;">Instant Online Access</h3>
+        <p style="color:var(--text-secondary); font-size:0.9rem;">View question papers and answer keys directly in your browser — no downloads required.</p>
+      </div>
+      <div class="card card-glow" style="text-align:center; padding:2rem;">
+        <div style="font-size:2.5rem; margin-bottom:1rem;">🔍</div>
+        <h3 style="margin-bottom:0.5rem;">Smart Search & Filter</h3>
+        <p style="color:var(--text-secondary); font-size:0.9rem;">Find papers by subject, year, board, or exam name instantly.</p>
+      </div>
+      <div class="card card-glow" style="text-align:center; padding:2rem;">
+        <div style="font-size:2.5rem; margin-bottom:1rem;">🔑</div>
+        <h3 style="margin-bottom:0.5rem;">Complete Answer Keys</h3>
+        <p style="color:var(--text-secondary); font-size:0.9rem;">Every paper can include a full answer key — learn from your mistakes immediately.</p>
+      </div>
+      <div class="card card-glow" style="text-align:center; padding:2rem;">
+        <div style="font-size:2.5rem; margin-bottom:1rem;">🎓</div>
+        <h3 style="margin-bottom:0.5rem;">Community Driven</h3>
+        <p style="color:var(--text-secondary); font-size:0.9rem;">Any student can upload, growing the database collaboratively.</p>
+      </div>
+      <div class="card card-glow" style="text-align:center; padding:2rem;">
+        <div style="font-size:2.5rem; margin-bottom:1rem;">⬇️</div>
+        <h3 style="margin-bottom:0.5rem;">Easy Download</h3>
+        <p style="color:var(--text-secondary); font-size:0.9rem;">Download any paper or answer key for offline study with one click.</p>
+      </div>
+      <div class="card card-glow" style="text-align:center; padding:2rem;">
+        <div style="font-size:2.5rem; margin-bottom:1rem;">🆓</div>
+        <h3 style="margin-bottom:0.5rem;">Completely Free</h3>
+        <p style="color:var(--text-secondary); font-size:0.9rem;">No paywalls, no subscriptions. Open for every student.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="section">
+  <div class="container" style="text-align:center;">
+    <div class="card" style="max-width:600px; margin:0 auto; padding:3rem; background:linear-gradient(135deg, rgba(59,130,246,0.1), rgba(6,182,212,0.05)); border-color:rgba(59,130,246,0.2);">
+      <div style="font-size:2.5rem; margin-bottom:1rem;">🚀</div>
+      <h2 style="font-size:1.6rem; margin-bottom:0.75rem;">Have a PYQ Paper?</h2>
+      <p style="color:var(--text-secondary); margin-bottom:1.5rem;">Help fellow students by uploading question papers and answer keys you've collected.</p>
+      <a href="upload.html" class="btn btn-primary btn-lg">Start Uploading →</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <p>© 2026 PYQ Portal · Built by students, for students · <a href="browse.html">Browse Papers</a> · <a href="upload.html">Upload</a></p>
+  </div>
+</footer>
+
+<div id="toast-container"></div>
+
+<script src="app.js"></script>
+<script>
+  // Load stats & recent papers
+  document.addEventListener('DOMContentLoaded', () => {
+    const papers = getPapers();
+    const subjects = [...new Set(papers.map(p => p.subject))];
+    const withKey = papers.filter(p => p.answerKeyData);
+
+    document.getElementById('stat-papers').textContent   = papers.length;
+    document.getElementById('stat-subjects').textContent = subjects.length;
+    document.getElementById('stat-keys').textContent     = withKey.length;
+
+    const recentContainer = document.getElementById('recent-papers');
+    const emptyState      = document.getElementById('recent-empty');
+    const recent = [...papers].reverse().slice(0, 6);
+
+    if (recent.length === 0) {
+      emptyState.style.display = 'block';
+    } else {
+      recent.forEach(p => {
+        recentContainer.insertAdjacentHTML('beforeend', buildPaperCard(p));
+      });
+    }
+  });
+</script>
+</body>
+</html>

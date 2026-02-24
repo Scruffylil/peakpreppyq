@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Browse Papers — PYQ Portal</title>
+    <meta name="description" content="Search and browse previous year question papers by subject, year, and board." />
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+        .filter-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            align-items: center;
+            padding: 1rem 1.25rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            margin-bottom: 1.75rem;
+        }
+
+        .filter-bar .search-bar {
+            flex: 1;
+            min-width: 220px;
+        }
+
+        .filter-bar select {
+            min-width: 150px;
+        }
+
+        .results-meta {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+
+        .sort-btn {
+            font-size: 0.82rem;
+            padding: 5px 12px;
+        }
+
+        .sort-btn.active {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <a href="index.html" class="nav-logo">
+            <div class="logo-icon">📚</div>
+            PYQ Portal
+        </a>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="browse.html" class="active">Browse</a>
+            <a href="upload.html" class="nav-cta btn btn-sm">+ Upload Paper</a>
+        </div>
+    </nav>
+
+    <!-- PAGE HERO -->
+    <div class="page-hero">
+        <div class="container">
+            <h1>🔍 Browse Papers</h1>
+            <p>Search through all uploaded question papers and answer keys</p>
+        </div>
+    </div>
+
+    <!-- BROWSE SECTION -->
+    <section class="section">
+        <div class="container">
+            <!-- FILTER BAR -->
+            <div class="filter-bar">
+                <div class="search-bar">
+                    <span class="search-icon">🔍</span>
+                    <input class="form-input" id="search-input" type="text"
+                        placeholder="Search by subject, exam, board…" />
+                </div>
+                <select class="form-select" id="filter-subject" style="width:auto;">
+                    <option value="">All Subjects</option>
+                </select>
+                <select class="form-select" id="filter-year" style="width:auto;">
+                    <option value="">All Years</option>
+                </select>
+                <select class="form-select" id="filter-board" style="width:auto;">
+                    <option value="">All Boards</option>
+                </select>
+                <button class="btn btn-outline btn-sm" id="clear-filters">Clear</button>
+            </div>
+
+            <!-- SORT + RESULTS META -->
+            <div
+                style="display:flex; align-items:center; justify-content:space-between; margin-bottom:1rem; flex-wrap:wrap; gap:0.5rem;">
+                <div class="results-meta" id="results-meta"></div>
+                <div style="display:flex; gap:6px;">
+                    <button class="btn btn-outline sort-btn active" data-sort="newest">Newest</button>
+                    <button class="btn btn-outline sort-btn" data-sort="oldest">Oldest</button>
+                    <button class="btn btn-outline sort-btn" data-sort="subject">Subject</button>
+                </div>
+            </div>
+
+            <!-- CARDS GRID -->
+            <div class="grid-auto" id="papers-grid"></div>
+
+            <!-- EMPTY STATE -->
+            <div id="empty-state" class="empty-state" style="display:none;">
+                <div class="empty-icon">📭</div>
+                <h3>No papers found</h3>
+                <p id="empty-message">Try adjusting your filters or search term</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <p>© 2026 PYQ Portal · <a href="index.html">Home</a> · <a href="upload.html">Upload a Paper</a></p>
+        </div>
+    </footer>
+
+    <div id="toast-container"></div>
+    <script src="app.js"></script>
+    <script>
+        let currentSort = 'newest';
+        let allPapers = [];
+
+        function populateFilters(papers) {
+            const subjects = [...new Set(papers.map(p => p.subject).filter(Boolean))].sort();
+            const years = [...new Set(papers.map(p => p.year).filter(Boolean))].sort((a, b) => b - a);
+            const boards = [...new Set(papers.map(p => p.board).filter(Boolean))].sort();
+
+            const subSel = document.getElementById('filter-subject');
+            const yearSel = document.getElementById('filter-year');
+            const boardSel = document.getElementById('filter-board');
+
+            subjects.forEach(s => subSel.insertAdjacentHTML('beforeend', `<option value="${s}">${s}</option>`));
+            years.forEach(y => yearSel.insertAdjacentHTML('beforeend', `<option value="${y}">${y}</option>`));
+            boards.forEach(b => boardSel.insertAdjacentHTML('beforeend', `<option value="${b}">${b}</option>`));
+        }
+
+        function sortPapers(papers) {
+            return [...papers].sort((a, b) => {
+                if (currentSort === 'newest') return new Date(b.uploadedAt) - new Date(a.uploadedAt);
+                if (currentSort === 'oldest') return new Date(a.uploadedAt) - new Date(b.uploadedAt);
+                if (currentSort === 'subject') return a.subject.localeCompare(b.subject);
+                return 0;
+            });
+        }
+
+        function renderPapers() {
+            const query = document.getElementById('search-input').value.toLowerCase();
+            const subject = document.getElementById('filter-subject').value;
+            const year = document.getElementById('filter-year').value;
+            const board = document.getElementById('filter-board').value;
+
+            let filtered = allPapers.filter(p => {
+                const searchText = `${p.subject} ${p.examName} ${p.board} ${p.description}`.toLowerCase();
+                return (!query || searchText.includes(query))
+                    && (!subject || p.subject === subject)
+                    && (!year || p.year === year)
+                    && (!board || p.board === board);
+            });
+
+            filtered = sortPapers(filtered);
+
+            const grid = document.getElementById('papers-grid');
+            const empty = document.getElementById('empty-state');
+            const meta = document.getElementById('results-meta');
+
+            grid.innerHTML = '';
+
+            if (filtered.length === 0) {
+                empty.style.display = 'block';
+                meta.textContent = '0 papers';
+                const emptyMsg = allPapers.length === 0
+                    ? 'No papers uploaded yet — be the first!'
+                    : 'Try adjusting your filters or search term';
+                document.getElementById('empty-message').textContent = emptyMsg;
+            } else {
+                empty.style.display = 'none';
+                meta.textContent = `${filtered.length} paper${filtered.length !== 1 ? 's' : ''} found`;
+                filtered.forEach(p => grid.insertAdjacentHTML('beforeend', buildPaperCard(p)));
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            allPapers = getPapers();
+            populateFilters(allPapers);
+            renderPapers();
+
+            document.getElementById('search-input').addEventListener('input', renderPapers);
+            document.getElementById('filter-subject').addEventListener('change', renderPapers);
+            document.getElementById('filter-year').addEventListener('change', renderPapers);
+            document.getElementById('filter-board').addEventListener('change', renderPapers);
+
+            document.getElementById('clear-filters').addEventListener('click', () => {
+                document.getElementById('search-input').value = '';
+                document.getElementById('filter-subject').value = '';
+                document.getElementById('filter-year').value = '';
+                document.getElementById('filter-board').value = '';
+                renderPapers();
+            });
+
+            document.querySelectorAll('.sort-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    currentSort = btn.dataset.sort;
+                    renderPapers();
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
